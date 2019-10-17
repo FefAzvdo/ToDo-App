@@ -1,4 +1,4 @@
-var listElement = document.querySelector('#app ul');
+var listElement = document.querySelector('#app table');
 var inputElement = document.querySelector('#app input');
 var buttonElement = document.querySelector('#app button');
 
@@ -14,26 +14,34 @@ function renderToDoList() {
   listElement.innerHTML = '';
 
   for (toDoItem of toDoList) {
-    var toDoItemElement = document.createElement('li');
+    var toDoItemElementContainer = document.createElement('tr')
+
+    var toDoItemElement = document.createElement('td');
+    var toDoItemElement2 = document.createElement('td');
+    var toDoItemElement3 = document.createElement('td');
+
     var toDoItemText = document.createTextNode(toDoItem);
 
     var toDoLink = document.createElement('a');
     toDoLink.setAttribute('href', '#');
+    var toDoLinkText = document.createTextNode(' CONCLUIR TAREFA');
+    toDoLink.appendChild(toDoLinkText);
 
     var toDoEdit = document.createElement('a');
     toDoEdit.setAttribute('href', '#');
-
-    var toDoEditText = document.createTextNode(' Editar');
+    var toDoEditText = document.createTextNode(' EDITAR');
     toDoEdit.appendChild(toDoEditText);
 
-    var toDoLinkText = document.createTextNode(' Exluir');
-    toDoLink.appendChild(toDoLinkText);
+
+    toDoItemElementContainer.appendChild(toDoItemElement);
+    toDoItemElementContainer.appendChild(toDoItemElement2);
+    toDoItemElementContainer.appendChild(toDoItemElement3);
 
     toDoItemElement.appendChild(toDoItemText);
-    toDoItemElement.appendChild(toDoLink);
-    toDoItemElement.appendChild(toDoEdit);
+    toDoItemElement2.appendChild(toDoEdit);
+    toDoItemElement3.appendChild(toDoLink);
 
-    listElement.appendChild(toDoItemElement);
+    listElement.appendChild(toDoItemElementContainer);
 
     var pos = toDoList.indexOf(toDoItem);
     console.log(pos);
@@ -46,12 +54,22 @@ function renderToDoList() {
 function addToDo() {
 
   var toDoText = inputElement.value;
+
+  if (inputElement.value === '') {
+    return
+  }
+
   toDoList.push(toDoText);
 
   inputElement.value = '';
 
+  inputElement.focus();
   renderToDoList();
   saveToStorage();
+}
+
+function clearToDo() {
+
 }
 
 function excludeToDo(pos) {
@@ -66,6 +84,7 @@ function excludeToDo(pos) {
 
 function editToDo(pos) {
   containerElement = document.querySelector('#app form');
+  containerElement.setAttribute('style', "display: flex;justify-content: space-between;align-items: center")
 
   containerElement.innerHTML = ''
 
@@ -73,6 +92,7 @@ function editToDo(pos) {
   newInput.setAttribute('type', 'Text');
   newInput.setAttribute('value', toDoList[pos]);
   //newInput.setAttribute('placeholder', toDoList[pos]);
+  newInput.setAttribute('style', "height: 30px; padding: 10px; margin: 50px; font-size: 20px; flex: 3;")
 
   var EditBtn = document.createElement('button');
   EditBtn.setAttribute('onclick', '');
